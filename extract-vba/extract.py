@@ -101,10 +101,12 @@ def open_workbook(workbook_file):
     try:
         excel_app = Dispatch("Excel.Application")
         excel_app.Visible = 0
+        print(workbook_file)
         wb_com_obj = excel_app.Workbooks.Open(workbook_file)
         yield wb_com_obj
-    except com_error:
+    except com_error as err:
         # probably file not found.
+        print(err.excepinfo[2])
         raise
     finally:
         try:
@@ -125,17 +127,20 @@ def open_access_db(access_file):
     try:
         access_app = Dispatch("Access.Application")
 #        access_app.Visible = 1
+        print(access_file)
         access_app.OpenCurrentDatabase(access_file)
         yield access_app
     except com_error as err:
         if err.excepinfo[2] == "You already have the database open.":
             print("Warning: database already open")
         else:
+            print(err.excepinfo[2])
             raise err
     finally:
         try:
             access_app.CloseCurrentDatabase()
         except com_error as err:
+            print(err.excepinfo[2])
             if "refers to an object that is closed" in err.excepinfo[2]:
                 pass
             else:
@@ -163,6 +168,7 @@ def extract_component(vb_component):
         vb_src = vb_code_module.Lines(1, vb_code_module.CountOfLines)
     except com_error as err:
         # it's likely that this component doesn't have any code
+        print(err.excepinfo[2])
         vb_src = None
         handle_com_err_code(err, 5)      # Invalid procedure call
     else:
@@ -191,7 +197,7 @@ def extract_components(com_obj, save_path):
             break
 
         vb_name, vb_type, _, vb_src = extract_component(component)
-
+        print(vb_name, vb_type)
         if vb_src:
             ext = EXTENSIONS[vb_type]
             save_component(save_path, vb_src, vb_name, ext)
@@ -238,7 +244,7 @@ def main(path=None,
                     with open_workbook(filepath) as openwb:
                         extract_components(openwb, save_path)
                 except com_error:
-                    print("!! Error extacting from {}".format(filename))
+                    print("!! Error extracting from {}".format(filename))
                     continue
 
             elif ext == EXT_ACCESS:
@@ -247,7 +253,7 @@ def main(path=None,
                     with open_access_db(filepath) as opendb:
                         extract_components(opendb, save_path)
                 except com_error:
-                    print("!! Error extacting from {}".format(filename))
+                    print("!! Error extracting from {}".format(filename))
                     continue
 
             elif ext == EXT_WORD:
