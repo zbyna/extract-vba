@@ -1,10 +1,14 @@
 # extract-vba
 
-This is a project designed to help use Source Code Control (SCC) with
-VBA projects that are embedded within MS Office files.
+This project uses source code from: https://github.com/dougthor42/extract-vba
+Thanks @dougthor42
 
-The goal of the project is to have a script that can be called from a
-git hook or from a CI server.
+I need to use as standalone script so I added:
+- extended errors info output
+- path as optional argument, if missing current directory is searched
+- possibility to use relative path as argument
+
+So nothing to write home :-)
 
 
 ## Instructions
