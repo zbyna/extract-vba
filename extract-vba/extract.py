@@ -1,21 +1,16 @@
 # -*- coding: utf-8 -*-
 """
 Extracts all the VBA from an MS OFfice file into separate files for SCC.
-
 Created on Wed Mar  2 14:33:00 2016
-
 @author: dthor
-
 Usage:
     extract.py
-
 Options:
     -h --help           # Show this screen.
     --version           # Show version.
-
 """
 # ---------------------------------------------------------------------------
-### Imports
+# Imports
 # ---------------------------------------------------------------------------
 # Standard Library
 import argparse
@@ -30,13 +25,14 @@ from win32com.universal import com_error
 #from docopt import docopt
 
 # ---------------------------------------------------------------------------
-### Constants
+# Constants
 # ---------------------------------------------------------------------------
 EXT_EXCEL = '.xlsm'
 EXT_ACCESS = '.accdb'
 EXT_WORD = '.docm'
 EXT_PPT = '.pptm'
 VALID_EXT = (EXT_EXCEL, EXT_ACCESS, EXT_WORD, EXT_PPT)
+
 
 class VBCompType(IntEnum):
     """ From http://www.pretentiousname.com/excel_extractvba/ """
@@ -56,15 +52,15 @@ EXTENSIONS = {
               }
 
 # ---------------------------------------------------------------------------
-### Functions
+# Functions
 # ---------------------------------------------------------------------------
+
+
 def handle_com_err_code(err, allowed_codes):
     """
     Passes specific win32com error codes, raising others.
-
     See https://msdn.microsoft.com/en-us/library/aa264975(v=vs.60).aspx
     for error codes.
-
     Attributes of 'com_error':
     --------------------------
     ``err.args`` : tuple
@@ -74,14 +70,10 @@ def handle_com_err_code(err, allowed_codes):
         be -2147352567
     ``err.strerror`` : str
         ``err.args[1]``. The error string (from  _win32com_?)
-
     ``err.excepinfo`` : tuple
         ``err.args[2]``. Seems to be everything from the COM error
-
     ``err.argerror`` : unknown
         Possibly ``err.args[3]``. Seems to always be `None`
-
-
     Indicies of 'err.excepinfo':
     ----------------------------
     + [0] : ??
@@ -127,7 +119,6 @@ def open_access_db(access_file):
     """
     Open Access and the database, returning the Access application COM
     object. Upon competion or error, close the open database.
-
     + https://msdn.microsoft.com/en-us/library/office/ff837226.aspx
     + https://msdn.microsoft.com/en-us/library/office/ff836850.aspx
     """
@@ -285,4 +276,3 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     main(**vars(args))
-
