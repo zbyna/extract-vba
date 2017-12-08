@@ -213,7 +213,8 @@ def main(path=None,
     """
     """
     if path is None:
-        raise ValueError("The 'path' argument is required")
+        print("Path was not entered, scanning current directory .....")
+        path = os.path.dirname(os.path.realpath(__file__))
 
     for dirpath, dirnames, filenames in os.walk(path):
         # skip over the .git directory, removing it so we don't traverse it.
@@ -270,8 +271,8 @@ def main(path=None,
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("path",
-                        help="the path to look for Office docs in",
+    parser.add_argument("-p", "--path",
+                        help="the ABSOLUTE or RELATIVE path to look for Office docs in",
                         type=str,
                         )
     parser.add_argument("-x", "--excel-only",
