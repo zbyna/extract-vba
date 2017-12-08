@@ -46,10 +46,13 @@ class VBCompType(IntEnum):
     DOCUMENT = 100
 
 
-EXTENSIONS = {VBCompType.STD_MODULE: '.bas',
+EXTENSIONS = {
+    # původně '.bas' ale dám .vbs kvůli syntax color
+    VBCompType.STD_MODULE: '.vbs',
               VBCompType.CLASS_MODULE: '.cls',
               VBCompType.MS_FORM: '.frm',
-              VBCompType.DOCUMENT: '.txt',
+    # původně '.txt' ale dám .vbs kvůli syntax color
+    VBCompType.DOCUMENT: '.vbs',
               }
 
 # ---------------------------------------------------------------------------
