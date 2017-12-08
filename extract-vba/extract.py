@@ -45,11 +45,11 @@ class VBCompType(IntEnum):
 EXTENSIONS = {
     # původně '.bas' ale dám .vbs kvůli syntax color
     VBCompType.STD_MODULE: '.vbs',
-              VBCompType.CLASS_MODULE: '.cls',
-              VBCompType.MS_FORM: '.frm',
+    VBCompType.CLASS_MODULE: '.cls',
+    VBCompType.MS_FORM: '.frm',
     # původně '.txt' ale dám .vbs kvůli syntax color
     VBCompType.DOCUMENT: '.vbs',
-              }
+}
 
 # ---------------------------------------------------------------------------
 # Functions
@@ -215,6 +215,10 @@ def main(path=None,
     if path is None:
         print("Path was not entered, scanning current directory .....")
         path = os.path.dirname(os.path.realpath(__file__))
+    elif not os.path.isabs(path):
+        print("The path is relative, converting to:")
+        path = os.path.abspath(path)
+        print(path)
 
     for dirpath, dirnames, filenames in os.walk(path):
         # skip over the .git directory, removing it so we don't traverse it.
@@ -282,4 +286,4 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
 
-    main(**vars(args))
+main(**vars(args))
